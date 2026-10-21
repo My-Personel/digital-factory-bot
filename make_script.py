@@ -40,3 +40,24 @@ def generate(topic: str) -> dict:
     if "#shorts" not in data["description"].lower():
         data["description"] += "\n#shorts"
     return data
+
+
+TOPIC_PROMPT = """Tum "{channel}" Hindi YouTube Shorts channel ke liye topic researcher ho.
+Channel "kaise banta hai / kaise kaam karta hai" (factory, gas, fuel, bijli, machine) type ke Shorts banata hai.
+Best chale topics: LPG cylinder filling, PNG gas, petrol kaise bana, LNG, silver factory, cricket ball, battery.
+{count} NAYE topics do (Hinglish me, ek line each). Interesting, hairan karne wale, aam aadmi se jude.
+Ye topics pehle ho chuke hain, repeat mat karo:
+{done}
+Sirf JSON array of strings do."""
+
+def suggest_topics(done, count=15):
+    url = (f"https://generativelanguage.googleapis.com/v1beta/models/"
+           f"{config.GEMINI_MODEL}:generateContent?key={config.GEMINI_API_KEY}")
+    body = {"contents": [{"parts": [{"text": TOPIC_PROMPT.format(
+                channel=config.CHANNEL_NAME, count=count, done="\n".join(done[-60:]) or "(none)")}]}],
+            "generationConfig": {"responseMimeType": "application/json", "temperature": 0.9}}
+    r = requests.post(url, json=body, timeout=90)
+    r.raise_for_status()
+    items = json.loads(r.json()["candidates"][0]["content"]["parts"][0]["text"])
+    done_l = {d.lower() for d in done}
+    return [t.strip() for t in items if isinstance(t, str) and t.strip().lower() not in done_l]

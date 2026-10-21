@@ -2,7 +2,7 @@ Petrol Pump ki machine andar se kaise kaam karti hai
 CNG Gas car me kaise bhari jaati hai
 Diesel aur Petrol me kya fark hota hai
 Gas Cylinder ka expiry date kaise check karein
-Bijli (Electricity) power plant se ghar tak kaise aati hai
+Bijli power plant se ghar tak kaise aati hai
 Solar Panel factory me kaise banta hai
 Gas Geyser andar se kaise kaam karta hai
 Matchbox (Machis) factory me kaise banti hai
@@ -10,3 +10,31 @@ Tyre factory me kaise banta hai
 Engine Oil kaise banta hai
 LED Bulb factory me kaise banta hai
 Steel ke saria (TMT bar) kaise bante hain
+Crude Oil se Petrol, Diesel aur Gas kaise alag hote hain
+Oil Refinery andar se kaisi hoti hai
+Biogas plant me gobar se gas kaise banti hai
+Thermal Power Plant me koyle se bijli kaise banti hai
+Wind Turbine ka blade kaise banta hai
+Transformer andar se kaise kaam karta hai
+Electric Meter bijli kaise naapta hai
+Car ki Battery factory me kaise banti hai
+Aluminium kaise banta hai
+Copper wire factory me kaise banta hai
+Glass bottle factory me kaise banti hai
+Cement factory me cement kaise banta hai
+Bricks (eent) factory me kaise bante hain
+Paint (rang) factory me kaise banta hai
+Plastic bottle kaise banti hai
+Sugar (cheeni) factory me kaise banti hai
+Salt (namak) samudra se kaise banta hai
+Pencil factory me kaise banti hai
+Ceiling Fan factory me kaise banta hai
+AC andar se thanda kaise karta hai
+Fridge andar se kaise kaam karta hai
+Mobile Phone factory me kaise banta hai
+Bike ka Engine kaise kaam karta hai
+Car ka Silencer kya karta hai
+Brake pad factory me kaise banta hai
+Gold (sona) khaan se jewellery tak kaise banta hai
+Coins (sikke) kaise bante hain
+Currency Note kaise chhapte hain

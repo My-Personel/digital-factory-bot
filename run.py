@@ -9,8 +9,12 @@ import config, make_script, make_voice, make_video
 def pop_topic():
     with open("topics.txt", encoding="utf-8") as f:
         lines = [l.strip() for l in f if l.strip()]
-    if not lines:
-        raise SystemExit("topics.txt khali hai - naye topics daalo!")
+    if not lines:                       # queue khali -> Gemini se naye topics
+        done = [l.strip() for l in open("done.txt", encoding="utf-8") if l.strip()]
+        lines = make_script.suggest_topics(done)
+        if not lines:
+            raise SystemExit("Naye topics nahi mile - topics.txt me khud daalo.")
+        print("Auto topics generated:", len(lines))
     topic, rest = lines[0], lines[1:]
     return topic, rest
 

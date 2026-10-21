@@ -33,6 +33,40 @@ def pexels_clip(keywords, dest, used):
             return True
     return False
 
+
+def pixabay_clip(keywords, dest, used):
+    for kw in keywords + ["factory machine", "industrial"]:
+        r = requests.get("https://pixabay.com/api/videos/",
+                         params={"key": config.PIXABAY_API_KEY, "q": kw[:90], "per_page": 15,
+                                 "safesearch": "true"}, timeout=30)
+        if r.status_code != 200:
+            continue
+        hits = [h for h in r.json().get("hits", []) if h["id"] not in used]
+        random.shuffle(hits)
+        for h in hits:
+            for size in ("large", "medium", "small"):
+                v = h["videos"].get(size) or {}
+                if v.get("url"):
+                    with requests.get(v["url"], stream=True, timeout=90) as resp:
+                        resp.raise_for_status()
+                        with open(dest, "wb") as out:
+                            for part in resp.iter_content(1 << 20):
+                                out.write(part)
+                    used.add(h["id"])
+                    return True
+    return False
+
+def local_clip(dest, used):
+    """clips/ folder me aapki apni video files (mp4/mov) - random uthata hai."""
+    import glob, shutil
+    files = [f for f in glob.glob("clips/*") if f.lower().endswith((".mp4", ".mov", ".mkv")) and f not in used]
+    if not files:
+        return False
+    f = random.choice(files)
+    used.add(f)
+    shutil.copy(f, dest)
+    return True
+
 def fallback_clip(dest, dur, color):
     _run(["ffmpeg", "-y", "-f", "lavfi", "-i", f"color=c={color}:s={config.WIDTH}x{config.HEIGHT}:r={config.FPS}",
           "-t", f"{dur:.2f}", "-c:v", "libx264", "-pix_fmt", "yuv420p", dest])
@@ -86,10 +120,17 @@ def build(scenes, words, audio, workdir, out_path):
     for i, (s, d) in enumerate(zip(scenes, durs)):
         raw, norm = f"{workdir}/raw{i}.mp4", f"{workdir}/n{i}.mp4"
         ok = False
-        try:
-            ok = bool(config.PEXELS_API_KEY) and pexels_clip(s.get("keywords", []), raw, used)
-        except Exception as e:
-            print("pexels error:", e)
+        for name, fn, enabled in (
+            ("local",   lambda: local_clip(raw, used),                         os.path.isdir("clips")),
+            ("pixabay", lambda: pixabay_clip(s.get("keywords", []), raw, used), bool(config.PIXABAY_API_KEY)),
+            ("pexels",  lambda: pexels_clip(s.get("keywords", []), raw, used),  bool(config.PEXELS_API_KEY)),
+        ):
+            if ok or not enabled:
+                continue
+            try:
+                ok = bool(fn())
+            except Exception as e:
+                print(name, "error:", e)
         if not ok:
             fallback_clip(raw, d + 1, palette[i % 4])
         normalize(raw, norm, d)

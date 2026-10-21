@@ -3,7 +3,8 @@ import os
 # ---- Keys (environment variables se aate hain, code me mat likhna) ----
 GEMINI_API_KEY   = os.getenv("GEMINI_API_KEY", "")
 GEMINI_MODEL     = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
-PEXELS_API_KEY   = os.getenv("PEXELS_API_KEY", "")
+PEXELS_API_KEY   = os.getenv("PEXELS_API_KEY", "")     # optional (abhi naye keys band hain)
+PIXABAY_API_KEY  = os.getenv("PIXABAY_API_KEY", "")    # free, recommended
 YT_CLIENT_ID     = os.getenv("YT_CLIENT_ID", "")
 YT_CLIENT_SECRET = os.getenv("YT_CLIENT_SECRET", "")
 YT_REFRESH_TOKEN = os.getenv("YT_REFRESH_TOKEN", "")
