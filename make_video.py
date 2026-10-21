@@ -1,4 +1,4 @@
-"""Pexels (free) stock clips + ffmpeg se vertical Short banata hai, captions ke saath."""
+"""Pixabay/Pexels (free) stock clips + ffmpeg se vertical Short banata hai, captions ke saath."""
 import os, random, subprocess, requests
 import config
 
@@ -44,7 +44,7 @@ def pixabay_clip(keywords, dest, used):
         hits = [h for h in r.json().get("hits", []) if h["id"] not in used]
         random.shuffle(hits)
         for h in hits:
-            for size in ("large", "medium", "small"):
+            for size in ("medium", "small", "large"):
                 v = h["videos"].get(size) or {}
                 if v.get("url"):
                     with requests.get(v["url"], stream=True, timeout=90) as resp:

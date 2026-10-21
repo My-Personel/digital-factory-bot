@@ -6,21 +6,37 @@
 import argparse, json, os, re, datetime
 import config, make_script, make_voice, make_video
 
+
+def read_lines(path):
+    """File na hoy to khali list (crash nahi)."""
+    if not os.path.exists(path):
+        return []
+    with open(path, encoding="utf-8") as f:
+        return [l.strip() for l in f if l.strip()]
+
+
 def pop_topic():
-    with open("topics.txt", encoding="utf-8") as f:
-        lines = [l.strip() for l in f if l.strip()]
+    lines = read_lines("topics.txt")
     if not lines:                       # queue khali -> Gemini se naye topics
-        done = [l.strip() for l in open("done.txt", encoding="utf-8") if l.strip()]
-        lines = make_script.suggest_topics(done)
+        lines = make_script.suggest_topics(read_lines("done.txt"))
         if not lines:
             raise SystemExit("Naye topics nahi mile - topics.txt me khud daalo.")
         print("Auto topics generated:", len(lines))
-    topic, rest = lines[0], lines[1:]
-    return topic, rest
+    return lines[0], lines[1:]
+
+
+def mark_done(topic, rest):
+    """Topic use ho gaya -> queue update + done.txt me add."""
+    with open("topics.txt", "w", encoding="utf-8") as f:
+        f.write("\n".join(rest) + ("\n" if rest else ""))
+    with open("done.txt", "a", encoding="utf-8") as f:
+        f.write(topic + "\n")
+
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--topic"); ap.add_argument("--upload", action="store_true")
+    ap.add_argument("--topic")
+    ap.add_argument("--upload", action="store_true")
     ap.add_argument("--publish-at", help="ISO UTC time, e.g. 2026-10-13T12:30:00Z")
     a = ap.parse_args()
 
@@ -41,9 +57,9 @@ def main():
         import upload_youtube
         vid = upload_youtube.upload(mp4, data["title"], data["description"], data["tags"], a.publish_at)
         print("Uploaded: https://youtube.com/shorts/" + vid)
-    if rest is not None:                      # topic use ho gaya -> done.txt me
-        open("topics.txt", "w", encoding="utf-8").write("\n".join(rest) + ("\n" if rest else ""))
-        open("done.txt", "a", encoding="utf-8").write(topic + "\n")
+    if rest is not None:
+        mark_done(topic, rest)
+
 
 if __name__ == "__main__":
     main()

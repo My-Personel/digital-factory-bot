@@ -1,6 +1,6 @@
 # Digital Factory Bot (100% free)
 
-Roz ek Hindi Short apne aap: topic -> Gemini script -> Hindi voice -> Pexels visuals -> captions -> YouTube upload.
+Roz ek Hindi Short apne aap: topic -> Gemini script -> Hindi voice -> Pixabay visuals -> captions -> YouTube upload.
 
 ## Setup (ek baar, ~20 min)
 1. Free keys lo:
@@ -11,11 +11,11 @@ Roz ek Hindi Short apne aap: topic -> Gemini script -> Hindi voice -> Pexels vis
    Laptop par: `pip install -r requirements.txt && python get_refresh_token.py client_secret.json`
    Jo 3 values aayein wo save karo.
 3. GitHub par private repo banao, ye folder push karo.
-   Settings -> Secrets and variables -> Actions: GEMINI_API_KEY, PEXELS_API_KEY, YT_CLIENT_ID, YT_CLIENT_SECRET, YT_REFRESH_TOKEN
+   Settings -> Secrets and variables -> Actions: GEMINI_API_KEY, PIXABAY_API_KEY, YT_CLIENT_ID, YT_CLIENT_SECRET, YT_REFRESH_TOKEN
 4. Actions tab -> "Daily Short" -> Run workflow (test). Baad me roz 5 PM IST khud chalega.
 
 ## Local test (upload ke bina)
-    export GEMINI_API_KEY=... PEXELS_API_KEY=...
+    export GEMINI_API_KEY=... PIXABAY_API_KEY=...
     sudo apt install ffmpeg fonts-noto-core
     python run.py --topic "CNG gas car me kaise bhari jaati hai"
 Video `out/` folder me milega. Pehle 5-10 video dekh kar quality check karo.
